@@ -25,7 +25,7 @@ If that loop is not fun, economy, NFTs, marketplace, lore and multiplayer are ir
 
 ## Technology
 
-- **Three.js** for 3D rendering (fixed isometric camera; orthographic and low-FOV perspective modes)
+- **Three.js** for 3D rendering (fixed Diablo-like camera: low-FOV perspective by default, orthographic isometric as an option)
 - **Vite** for development and builds
 - **JavaScript** for gameplay code
 - **Tiled** for map authoring (JSON export read by the game)
@@ -51,7 +51,8 @@ Controls in the current build:
 |---|---|
 | Left click | walk there (hold to keep following the cursor) |
 | Mouse wheel | zoom |
-| `C` | switch camera (isometric / perspective) |
+| `Shift` + mouse wheel | camera pitch (30° to 60°) |
+| `C` | switch camera (perspective / isometric) |
 | `G` | show the navigation grid |
 | `F` | frames per second |
 | `H` | hide the help panel |
@@ -81,4 +82,5 @@ src/ui/              HUD and menus (HTML/CSS over the canvas)
 ## Project status
 
 - M0 (foundation): done.
-- M1 (a room that feels good): built. A 20×20 village slice with KayKit art, animated knight, click-to-move with A* pathfinding, hero silhouette behind buildings, torch and campfire lighting. Waiting for the "does walking feel good?" test before M2.
+- M1 (a room that feels good): done. A 20×20 village slice with KayKit art, animated knight, click-to-move with A* pathfinding, hero silhouette behind buildings, torch and campfire lighting. Camera: perspective, 42° pitch.
+- Next: M2 (Map 1 blockout in Tiled).

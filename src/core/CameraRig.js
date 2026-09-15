@@ -18,8 +18,15 @@ export class CameraRig {
       'wheel',
       (e) => {
         e.preventDefault();
+        // No Windows, Shift + roda chega como rolagem horizontal (deltaX)
+        const delta = e.deltaY || e.deltaX;
+        if (!delta) return;
+        if (e.shiftKey) {
+          this.adjustPitch(Math.sign(delta) * this.config.pitch.step);
+          return;
+        }
         const { min, max, step } = this.config.zoom;
-        this.zoom = THREE.MathUtils.clamp(this.zoom + Math.sign(e.deltaY) * step, min, max);
+        this.zoom = THREE.MathUtils.clamp(this.zoom + Math.sign(delta) * step, min, max);
         this.applyProjection();
       },
       { passive: false },
@@ -35,11 +42,19 @@ export class CameraRig {
     this.place();
   }
 
+  adjustPitch(deltaDeg) {
+    const { min, max } = this.config.pitch;
+    this.config.pitchDeg = THREE.MathUtils.clamp(this.config.pitchDeg + deltaDeg, min, max);
+    this.place();
+    this.onChange?.(this.config);
+  }
+
   toggleMode() {
     this.config.mode = this.config.mode === 'perspective' ? 'orthographic' : 'perspective';
     this.camera = this.config.mode === 'perspective' ? this.persp : this.ortho;
     this.applyProjection();
     this.place();
+    this.onChange?.(this.config);
     return this.config.mode;
   }
 

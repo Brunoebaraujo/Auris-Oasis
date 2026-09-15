@@ -39,7 +39,7 @@ html, body {
   background: var(--plate);
   border-radius: 3px;
   pointer-events: none;
-  max-width: 330px;
+  max-width: 390px;
 }
 
 .hud[hidden] { display: none; }

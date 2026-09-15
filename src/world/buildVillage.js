@@ -143,7 +143,7 @@ function buildLights(scene) {
   const moon = new THREE.DirectionalLight(0xb7c8e0, 1.15);
   moon.castShadow = true;
   moon.shadow.mapSize.set(2048, 2048);
-  Object.assign(moon.shadow.camera, { left: -26, right: 26, top: 26, bottom: -26, near: 1, far: 120 });
+  Object.assign(moon.shadow.camera, { left: -32, right: 32, top: 32, bottom: -32, near: 1, far: 120 });
   moon.shadow.bias = -0.0004;
   moon.shadow.normalBias = 0.03;
   scene.add(moon, moon.target);
@@ -153,7 +153,7 @@ function buildLights(scene) {
     update() {},
     followShadow(focus) {
       // encaixa na grade do shadow map para evitar tremulação das sombras
-      const step = 52 / 2048;
+      const step = 64 / 2048;
       const fx = Math.round(focus.x / step) * step;
       const fz = Math.round(focus.z / step) * step;
       moon.target.position.set(fx, 0, fz);
@@ -245,7 +245,7 @@ function buildForest(scene, assets, nav, map) {
   }
 
   // Árvores próximas projetam sombra; as distantes não (economiza GPU)
-  const SHADOW_RADIUS = 34;
+  const SHADOW_RADIUS = 40;
   const m4 = new THREE.Matrix4();
   const q = new THREE.Quaternion();
   const up = new THREE.Vector3(0, 1, 0);

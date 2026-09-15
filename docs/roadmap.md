@@ -10,9 +10,9 @@ Every milestone ends with something playable published on GitHub Pages. Details 
 
 Done when: the public URL opens a 3D scene.
 
-## M1 - A room that feels good (built, awaiting feel test)
+## M1 - A room that feels good (done)
 
-- Isometric camera tuning (orthographic vs. low-FOV perspective)
+- Camera tuning: low-FOV perspective chosen, default pitch 42° (Shift + wheel adjusts between 30° and 60°)
 - Animated character (KayKit)
 - Click to move, hold to keep moving
 - 20×20 slice of the village with real art, light and shadow

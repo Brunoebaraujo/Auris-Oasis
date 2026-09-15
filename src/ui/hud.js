@@ -2,7 +2,7 @@ import './hud.css';
 
 const MODE_LABEL = { orthographic: 'isométrica', perspective: 'perspectiva' };
 
-export function createHud(root, { mode }) {
+export function createHud(root, camera) {
   const el = document.createElement('aside');
   el.className = 'hud';
   el.innerHTML = `
@@ -11,6 +11,7 @@ export function createHud(root, { mode }) {
     <dl class="hud__keys">
       <dt>Clique</dt><dd>andar (segure para seguir o cursor)</dd>
       <dt>Roda</dt><dd>zoom</dd>
+      <dt>Shift + roda</dt><dd>inclinação <span data-pitch></span></dd>
       <dt>C</dt><dd>câmera <span data-mode></span></dd>
       <dt>G</dt><dd>grade de navegação</dd>
       <dt>F</dt><dd>quadros por segundo</dd>
@@ -30,6 +31,7 @@ export function createHud(root, { mode }) {
   let acc = 0;
 
   const modeEl = el.querySelector('[data-mode]');
+  const pitchEl = el.querySelector('[data-pitch]');
   const hud = {
     toggleFps() {
       fps.hidden = !fps.hidden;
@@ -44,14 +46,15 @@ export function createHud(root, { mode }) {
         acc = 0;
       }
     },
-    setMode(m) {
-      modeEl.textContent = `(${MODE_LABEL[m]})`;
+    setCamera({ mode, pitchDeg }) {
+      modeEl.textContent = `(${MODE_LABEL[mode]})`;
+      pitchEl.textContent = `(${pitchDeg}°)`;
     },
     toggle() {
       el.hidden = !el.hidden;
     },
   };
-  hud.setMode(mode);
+  hud.setCamera(camera);
   return hud;
 }
 

@@ -1,6 +1,6 @@
 # Plano de execução — Auris Oasis
 
-Status: decisões aprovadas em 15/09/2026. M0 concluído; M1 construído, aguardando o teste de sensação.
+Status: decisões aprovadas em 15/09/2026. M0 e M1 concluídos. Próximo: M2.
 
 ---
 
@@ -38,6 +38,7 @@ Parâmetros iniciais de câmera (ajustáveis num arquivo de configuração):
 - Rotação horizontal fixa de 45°, sem o jogador girar a câmera.
 - Inclinação entre 45° e 55° (testar as duas pontas no Marco 1).
 - Testar **ortográfica** (isométrica "pura") contra **perspectiva com FOV baixo** (~30°, sensação Diablo 4) e escolher pelo feeling.
+- **Decisão do M1:** perspectiva com FOV 30°, inclinação padrão de 42°.
 - Segue o jogador com suavização; zoom limitado (roda do mouse, faixa curta).
 - **Oclusão**: árvores, paredes e telhados entre a câmera e o jogador ficam semitransparentes; telhado some ao entrar numa casa.
 

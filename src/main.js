@@ -45,8 +45,9 @@ async function boot() {
   game.add({ update: () => village.followShadow(game.rig.focus) });
   game.rig.follow(player.object);
 
-  const hud = createHud(root, { mode: game.rig.config.mode });
-  game.input.onKey('KeyC', () => hud.setMode(game.rig.toggleMode()));
+  const hud = createHud(root, game.rig.config);
+  game.rig.onChange = (cfg) => hud.setCamera(cfg);
+  game.input.onKey('KeyC', () => game.rig.toggleMode());
   game.input.onKey('KeyG', () => (village.navDebug.visible = !village.navDebug.visible));
   game.input.onKey('KeyH', () => hud.toggle());
   game.input.onKey('KeyF', () => hud.toggleFps());
