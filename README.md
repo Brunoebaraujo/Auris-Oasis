@@ -3,6 +3,7 @@
 Auris Oasis is an experimental Diablo-like isometric RPG for the browser, focused on a small, playable vertical slice before expanding into a larger persistent world.
 
 Execution plan (Portuguese): [`docs/plano-de-execucao.md`](docs/plano-de-execucao.md)
+Product context (Portuguese): [`docs/contexto.md`](docs/contexto.md)
 
 ## Current objective
 

@@ -1,6 +1,7 @@
 # Plano de execução — Auris Oasis
 
 Status: decisões aprovadas em 15/09/2026. M0 e M1 concluídos. Próximo: M2.
+Visão de produto (hub, público, NPCs, riscos): [`contexto.md`](contexto.md).
 
 ---
 
@@ -82,7 +83,7 @@ Camadas padrão de cada mapa:
 
 ---
 
-## 3. Mapa 1 — Vale inicial (nome provisório)
+## 3. Mapa 1 — Aldeia (hub) e entorno (nome provisório)
 
 Grade inicial de 120 × 120 células. Layout proposto:
 
@@ -109,7 +110,7 @@ Zonas:
 
 | Zona | Papel | Conteúdo inicial |
 |---|---|---|
-| Vila | zona segura, ponto de renascimento | doador de missões, ferreiro/mercador, baú pessoal, fogueira/waypoint |
+| Aldeia (hub) | zona segura, encontro dos jogadores, renascimento | Fada (missões), vendedora de poções, mercador de armas (robô), alfaiate, Grão-Mestre (arena), baú pessoal, fogueira/waypoint; proposta de praça de portais para outros mundos |
 | Orla da floresta | primeiras missões, sem perigo | coleta, exploração, entregas |
 | Floresta média | missões com combate leve (Marco 5) | clareira com inimigos fracos, ruínas |
 | Rio e ponte | barreira natural de progressão | ponte liberada por missão |
@@ -118,7 +119,7 @@ Zonas:
 
 ---
 
-## 4. Mapa 2 — Caverna da montanha
+## 4. Mapa 2 — Caverna da montanha (primeira área de exploração)
 
 ```
 [Saída p/ Mapa 1]
@@ -133,6 +134,7 @@ Zonas:
 ```
 
 - Transição por portal com tela de carregamento, estilo Diablo.
+- Inimigos: diabretes, orcs, goblins e demônios.
 - Iluminação escura: luz ambiente mínima, raio de luz em volta do jogador, tochas nas paredes.
 - Andares 1 e 2 desenhados no Tiled com o kit KayKit Dungeon.
 - Evolução (Marco 7): andares procedurais montados a partir de "salas-modelo" desenhadas no Tiled, encaixadas por uma semente aleatória. Cada visita gera um layout diferente.
@@ -224,7 +226,7 @@ Cada marco termina com algo jogável publicado no GitHub Pages.
 | **M0 — Fundação** | Vite + Three.js, estrutura de pastas, deploy automático | A URL pública abre uma cena 3D |
 | **M1 — A sala gostosa** | Câmera isométrica (testes orto × perspectiva), personagem animado, clicar para andar, pedaço 20×20 da vila, luz e sombra. Antecipados do M2: A* e silhueta do herói atrás de objetos | Andar por 2 minutos é agradável por si só |
 | **M2 — Blockout do Mapa 1** | Leitor do Tiled, vila + floresta + montanha com blocos simples, A*, colisão, oclusão, portal da caverna (placeholder) | Atravessar o mapa inteiro clicando sem travar |
-| **M3 — Vila viva** | NPCs com diálogo, criação simples de personagem, artefato coletável, inventário, save local | Fase 1 do roadmap original concluída |
+| **M3 — Aldeia viva** | Os 5 NPCs com diálogo, criação de personagem com as 4 classes, primeiras peças futuristas, artefato coletável, inventário, save local | Fase 1 do roadmap original concluída |
 | **M4 — Missões** | Motor de missões por dados, diário, marcadores sobre NPCs, 2–3 missões de teste na orla | Você cria uma missão nova só com Tiled + JSON |
 | **M5 — Combate básico** | Inimigos na floresta, ataque por clique, vida, morte e renascimento na vila, drops simples, objetivo `derrotar` | Uma missão de caça completa funciona |
 | **M6 — Mapa 2** | Transição, antecâmara, 2 andares feitos à mão, chefe, iluminação de caverna | Entrar, limpar e sair da caverna |
