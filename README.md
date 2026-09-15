@@ -1,18 +1,19 @@
 # Auris Oasis
 
-Auris Oasis is an experimental Diablo-like 3D RPG prototype focused on a small, playable vertical slice before expanding into a larger persistent world.
+Auris Oasis is an experimental Diablo-like isometric RPG for the browser, focused on a small, playable vertical slice before expanding into a larger persistent world.
+
+Execution plan (Portuguese): [`docs/plano-de-execucao.md`](docs/plano-de-execucao.md)
 
 ## Current objective
 
 Build a first playable prototype with:
 
-- Login / character entry flow
-- Avatar creation
-- Small dark-fantasy 3D environment
-- Third-person / elevated Diablo-like camera
-- Basic character movement
-- One collectible artifact
-- Simple inventory UI
+- Fixed isometric camera (Diablo-like), click to move
+- Map 1: starting village surrounded by a forest for quests, with a mountain and a cave entrance to the north
+- Map 2: the mountain cave, where the dungeons live
+- Character entry and simple avatar creation
+- One collectible artifact and a simple inventory
+- Data-driven quest system (missions made of objectives)
 
 ## Development principle
 
@@ -22,15 +23,52 @@ Build one small room that feels good to enter, move around in, and collect somet
 
 If that loop is not fun, economy, NFTs, marketplace, lore and multiplayer are irrelevant.
 
-## Initial technology direction
+## Technology
 
-Preferred MVP direction:
+- **Three.js** for 3D rendering (fixed isometric camera; orthographic and low-FOV perspective modes)
+- **Vite** for development and builds
+- **JavaScript** for gameplay code
+- **Tiled** for map authoring (JSON export read by the game)
+- **KayKit** asset packs (CC0) for characters, dungeon and village art
+- **GitHub Pages** via GitHub Actions for publishing
+- **Supabase** later for login, character persistence and inventory
+- GitHub is the source of truth for code, maps, quest data, assets and documentation
 
-- PlayCanvas for browser-based 3D prototyping
-- JavaScript for gameplay scripts
-- Supabase later for login, character persistence and inventory
-- GitHub as source of truth for documentation, prompts and project structure
+## Running locally
+
+Requires Node.js 22 or newer.
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the address Vite prints (usually http://localhost:5173).
+
+Controls in the current build: `C` switches camera mode, `Space` pauses the demo hero, mouse wheel zooms.
+
+## Publishing
+
+Every push to `main` builds and publishes the game to GitHub Pages.
+
+One-time setup: in the repository, go to **Settings → Pages** and set **Source** to **GitHub Actions**.
+
+## Project structure
+
+```
+.github/workflows/   build and deploy
+data/                items, NPCs, enemies, quests (JSON)
+docs/                vision, roadmap, execution plan
+maps/                Tiled maps (.tmj)
+public/assets/       models, textures, sounds
+src/config/          camera, graphics and control settings
+src/core/            game loop, input, camera rig
+src/world/           map loading, navigation, occlusion, portals
+src/entities/        player, NPCs, enemies, ground items
+src/systems/         movement, quests, inventory, combat, loot, saving
+src/ui/              HUD and menus (HTML/CSS over the canvas)
+```
 
 ## Project status
 
-Phase: foundation setup.
+Milestone M0 (foundation): Vite + Three.js project, deploy pipeline and a placeholder village scene with the isometric camera.

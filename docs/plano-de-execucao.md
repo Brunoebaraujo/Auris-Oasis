@@ -1,7 +1,6 @@
 # Plano de execução — Auris Oasis
 
-Status: proposta (decisões marcadas como "a confirmar" ainda não foram aprovadas).
-Data: 15/09/2026
+Status: decisões aprovadas em 15/09/2026. Marco atual: M0 (fundação).
 
 ---
 
@@ -25,7 +24,7 @@ Pontos que precisam ser ajustados para o novo pedido:
 
 ## 2. Decisões propostas
 
-### 2.1 Visão isométrica: 3D com câmera fixa (a confirmar)
+### 2.1 Visão isométrica: 3D com câmera fixa (aprovado)
 
 Diablo 1 e 2 usam sprites 2D isométricos; Diablo 3 e 4 usam cenas 3D com câmera alta e fixa. A recomendação é o segundo caminho:
 
@@ -48,15 +47,14 @@ Controles padrão ARPG:
 - Botão direito: habilidade (a partir do Marco 5).
 - `1`–`4`: poções/habilidades. `I`: inventário. `J`: diário de missões. `M`: mapa. `Esc`: menu.
 
-### 2.2 Motor: Three.js + Vite, tudo em código (a confirmar)
+### 2.2 Motor: Three.js + Vite, tudo em código (aprovado)
 
 - Todo o projeto vive no GitHub (código, mapas, dados de missões, assets).
 - Maior ecossistema e documentação de 3D na web.
 - Publicação no GitHub Pages via GitHub Actions, como nos outros projetos.
 - JavaScript, como já previsto no README.
-- Alternativa: `playcanvas` como biblioteca (sem o Editor), que também funciona só com código. A escolha entre os dois não muda o resto do plano.
 
-### 2.3 Arte: pacotes KayKit (CC0) para começar (a confirmar)
+### 2.3 Arte: pacotes KayKit (CC0) para começar (aprovado)
 
 - KayKit Character Pack: Adventurers — personagens low-poly já riggados e animados.
 - KayKit Dungeon Remastered — mais de 200 peças modulares de dungeon (paredes, pisos, escadas, portas, baús), licença CC0, com repositório no GitHub.
@@ -235,7 +233,7 @@ Depois do M7: Supabase (contas e persistência), economia, multiplayer — e aí
 
 ---
 
-## 8. Ajustes nos documentos existentes (após aprovação)
+## 8. Ajustes nos documentos existentes (feitos no M0)
 
 - `README.md`: trocar "terceira pessoa" por "isométrica estilo Diablo"; atualizar direção de tecnologia (Three.js + Vite, Tiled, KayKit).
 - `docs/vision.md`: registrar os dois mapas iniciais; mover "sem combate" para "combate básico entra antes da dungeon".

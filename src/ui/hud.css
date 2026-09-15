@@ -1,0 +1,83 @@
+:root {
+  --parchment: #e8dcc0;
+  --parchment-dim: #b9ad92;
+  --torch: #e0a04a;
+  --dusk: rgba(20, 28, 32, 0.72);
+  --serif: 'IM Fell English', Georgia, serif;
+  --serif-sc: 'IM Fell English SC', Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  background: #2b3a3f;
+  color: var(--parchment);
+  font-family: var(--serif);
+}
+
+#app { position: fixed; inset: 0; }
+#app canvas { display: block; }
+
+.hud {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  padding: 14px 18px 12px;
+  background: var(--dusk);
+  border-radius: 3px;
+  pointer-events: none;
+  max-width: 300px;
+}
+
+.hud__title {
+  margin: 0;
+  font-family: var(--serif-sc);
+  font-weight: 400;
+  font-size: 1.75rem;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: var(--torch);
+}
+
+.hud__stage {
+  margin: 4px 0 10px;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--parchment-dim);
+}
+
+.hud__keys {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 3px 12px;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.hud__keys dt {
+  font-family: var(--serif-sc);
+  color: var(--parchment);
+}
+
+.hud__keys dd {
+  margin: 0;
+  color: var(--parchment-dim);
+}
+
+.fatal {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+@media (max-width: 520px) {
+  .hud { left: 10px; right: 10px; bottom: 10px; max-width: none; }
+}
