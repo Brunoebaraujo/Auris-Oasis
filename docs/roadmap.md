@@ -20,20 +20,22 @@ Done when: the public URL opens a 3D scene.
 
 Done when: walking around for two minutes is enjoyable on its own.
 
-## M2 - Map 1 blockout
+## M2 - Village hub and portals (built, awaiting test)
 
-- Tiled map loader (replaces `src/world/maps/vilaRecorte.js`)
-- Village, forest and mountain blocked out
-- Navigation grid generated from the Tiled blocking layer
-- Occlusion fading for trees, walls and roofs (the M1 silhouette stays)
-- Cave entrance portal (placeholder)
-- Mobile baseline: touch controls checked, responsive HUD, lighter graphics profile
+- Tiled map loader (`public/maps/*.tmj`, guide in `mapas.md`)
+- The village as the hub, with a portal plaza
+- Forest as the first area, reached by portal; Cave and new-world portals present but closed
+- Arena of Aurelius gate (closed)
+- Area switching with a loading curtain
+- Navigation grid generated from the map (terrain, blocking layer, props)
+- Occlusion: dithered hole around the hero (the M1 silhouette stays)
+- Mobile baseline: tap and hold to move, pinch zoom, responsive HUD, lighter graphics profile
 
-Done when: the whole map can be crossed by clicking or tapping without getting stuck, on desktop and phone.
+Done when: the player can go to the Forest and back and cross both areas without getting stuck, on desktop and phone.
 
-## M3 - Living village
+## M3 - Living village hub
 
-- Service NPCs: potion seller, weapons merchant (robot), tailor, the Fairy (missions), arena master (PvP, placeholder)
+- Service NPCs: potion seller, weapons merchant (robot), tailor, the Fairy (missions), Aurelius the arena master (PvP, placeholder)
 - Character creation with the 4 classic classes
 - First futuristic pieces mixed into the medieval village
 - Collectible artifact and inventory
@@ -45,7 +47,7 @@ Done when: the original Phase 1 vertical slice is complete.
 
 - Data-driven mission engine
 - Quest log and NPC markers
-- Two or three test missions in the forest edge (no combat)
+- Two or three test missions in the Forest (no combat)
 
 Done when: a new mission can be created only with Tiled + JSON.
 
@@ -58,9 +60,9 @@ Done when: a new mission can be created only with Tiled + JSON.
 
 Done when: a full hunting mission works.
 
-## M6 - Map 2: the cave
+## M6 - The Cave
 
-- Map transition with loading screen
+- Cave portal opened in the hub
 - Safe antechamber
 - Two hand-made dungeon floors with imps, orcs, goblins and demons, and a boss
 - Cave lighting (player light radius, torches)

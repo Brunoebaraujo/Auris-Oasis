@@ -56,6 +56,14 @@ export class NavGrid {
     });
   }
 
+  // Libera células cujo centro está dentro do retângulo (ex.: ponte sobre a água)
+  unblockBox(minX, minZ, maxX, maxZ) {
+    this.forEachCellIn(minX, minZ, maxX, maxZ, (c, r) => {
+      const [cx, cz] = this.centerOf(c, r);
+      if (cx >= minX && cx <= maxX && cz >= minZ && cz <= maxZ) this.blocked[r * this.cols + c] = 0;
+    });
+  }
+
   // Bloqueia a caixa de um objeto já posicionado no mundo
   blockObject(object3d, shrink = 1) {
     const box = new THREE.Box3().setFromObject(object3d);

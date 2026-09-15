@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 import { clone as cloneSkinned } from 'three/addons/utils/SkeletonUtils.js';
+import { makeOccludable } from '../systems/Occlusion.js';
 
 const BASE = `${import.meta.env.BASE_URL}assets/models/`;
 
@@ -20,10 +21,12 @@ export class Assets {
     await Promise.all(
       unique.map(async (path) => {
         const gltf = await this.loader.loadAsync(`${BASE}${path}.glb`);
+        const scenery = !path.startsWith('characters/');
         gltf.scene.traverse((o) => {
           if (o.isMesh) {
             o.castShadow = true;
             o.receiveShadow = true;
+            if (scenery) (Array.isArray(o.material) ? o.material : [o.material]).forEach(makeOccludable);
           }
         });
         this.cache.set(path, gltf);

@@ -9,9 +9,9 @@ Product context (Portuguese): [`docs/contexto.md`](docs/contexto.md)
 
 Build a first playable prototype with:
 
-- Fixed isometric camera (Diablo-like), click to move
-- Map 1: starting village surrounded by a forest for quests, with a mountain and a cave entrance to the north
-- Map 2: the mountain cave, where the dungeons live
+- Fixed Diablo-like camera, click (or tap) to move
+- The village as the hub, with portals to every area
+- The Forest (starting missions) and the Cave (first dungeon), reached by portal
 - Character entry and simple avatar creation
 - One collectible artifact and a simple inventory
 - Data-driven quest system (missions made of objectives)
@@ -29,7 +29,7 @@ If that loop is not fun, economy, NFTs, marketplace, lore and multiplayer are ir
 - **Three.js** for 3D rendering (fixed Diablo-like camera: low-FOV perspective by default, orthographic isometric as an option)
 - **Vite** for development and builds
 - **JavaScript** for gameplay code
-- **Tiled** for map authoring (JSON export read by the game)
+- **Tiled** for map authoring (`.tmj` files read by the game) — see [`docs/mapas.md`](docs/mapas.md)
 - **KayKit** asset packs (CC0) for characters, dungeon and village art — see [`public/assets/CREDITOS.md`](public/assets/CREDITOS.md)
 - **GitHub Pages** via GitHub Actions for publishing
 - **Supabase** later for login, character persistence and inventory
@@ -58,6 +58,8 @@ Controls in the current build:
 | `F` | frames per second |
 | `H` | hide the help panel |
 
+On phones and tablets: tap to walk, hold to keep following your finger, pinch to zoom, `?` for help. Add `?leve` to the URL to force the lighter graphics profile on desktop (or `?normal` to force full quality on a phone).
+
 ## Publishing
 
 Every push to `main` builds and publishes the game to GitHub Pages.
@@ -69,12 +71,12 @@ One-time setup: in the repository, go to **Settings → Pages** and set **Source
 ```
 .github/workflows/   build and deploy
 data/                items, NPCs, enemies, quests (JSON)
-docs/                vision, roadmap, execution plan
-maps/                Tiled maps (.tmj)
-public/assets/       models, textures, sounds
+docs/                vision, roadmap, execution plan, product context, map guide
+public/assets/       models (glb) and credits
+public/maps/         Tiled maps (.tmj) and the terrain tileset
 src/config/          camera, graphics and control settings
 src/core/            game loop, input, camera rig
-src/world/           map data and building, navigation grid, effects
+src/world/           Tiled loader, area building, portals, navigation grid, effects
 src/entities/        player, NPCs, enemies, ground items
 src/systems/         movement, quests, inventory, combat, loot, saving
 src/ui/              HUD and menus (HTML/CSS over the canvas)
@@ -84,4 +86,5 @@ src/ui/              HUD and menus (HTML/CSS over the canvas)
 
 - M0 (foundation): done.
 - M1 (a room that feels good): done. A 20×20 village slice with KayKit art, animated knight, click-to-move with A* pathfinding, hero silhouette behind buildings, torch and campfire lighting. Camera: perspective, 42° pitch.
-- Next: M2 (Map 1 blockout in Tiled).
+- M2 (village hub and portals): built. The village is the hub with a portal plaza; the Forest is the first area; Cave and new-world portals and the Arena of Aurelius gate are in place but closed. Tiled maps, occlusion hole, touch controls and a lighter mobile profile. Waiting for the play test.
+- Next: M3 (living village hub: NPCs, character creation, inventory).

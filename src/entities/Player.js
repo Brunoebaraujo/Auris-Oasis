@@ -74,6 +74,11 @@ export class Player {
     }
   }
 
+  setNav(nav) {
+    this.nav = nav;
+    this.path = [];
+  }
+
   get position() {
     return this.object.position;
   }

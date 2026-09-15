@@ -1,23 +1,44 @@
 import './hud.css';
+import { isTouch } from '../config/graphics.js';
 
 const MODE_LABEL = { orthographic: 'isométrica', perspective: 'perspectiva' };
+
+const DESKTOP_KEYS = `
+  <dt>Clique</dt><dd>andar (segure para seguir o cursor)</dd>
+  <dt>Roda</dt><dd>zoom</dd>
+  <dt>Shift + roda</dt><dd>inclinação <span data-pitch></span></dd>
+  <dt>C</dt><dd>câmera <span data-mode></span></dd>
+  <dt>G</dt><dd>grade de navegação</dd>
+  <dt>F</dt><dd>quadros por segundo</dd>
+  <dt>H</dt><dd>esconder este painel</dd>`;
+
+const TOUCH_KEYS = `
+  <dt>Toque</dt><dd>andar (segure para seguir o dedo)</dd>
+  <dt>Pinça</dt><dd>zoom</dd>
+  <dt>Portais</dt><dd>entre no círculo para viajar</dd>
+  <span hidden data-pitch></span><span hidden data-mode></span>`;
 
 export function createHud(root, camera) {
   const el = document.createElement('aside');
   el.className = 'hud';
+  el.id = 'painel-ajuda';
   el.innerHTML = `
     <h1 class="hud__title">Auris Oasis</h1>
-    <p class="hud__stage">Marco 1: a vila</p>
-    <dl class="hud__keys">
-      <dt>Clique</dt><dd>andar (segure para seguir o cursor)</dd>
-      <dt>Roda</dt><dd>zoom</dd>
-      <dt>Shift + roda</dt><dd>inclinação <span data-pitch></span></dd>
-      <dt>C</dt><dd>câmera <span data-mode></span></dd>
-      <dt>G</dt><dd>grade de navegação</dd>
-      <dt>F</dt><dd>quadros por segundo</dd>
-      <dt>H</dt><dd>esconder este painel</dd>
-    </dl>`;
+    <p class="hud__stage">Marco 2: <span data-area>Aldeia</span></p>
+    <dl class="hud__keys">${isTouch ? TOUCH_KEYS : DESKTOP_KEYS}</dl>`;
   root.appendChild(el);
+
+  const areaName = document.createElement('p');
+  areaName.className = 'area-name';
+  root.appendChild(areaName);
+
+  const help = document.createElement('button');
+  help.className = 'help-button';
+  help.type = 'button';
+  help.textContent = '?';
+  help.setAttribute('aria-controls', 'painel-ajuda');
+  help.setAttribute('aria-label', 'Mostrar ou esconder a ajuda');
+  root.appendChild(help);
 
   const vignette = document.createElement('div');
   vignette.className = 'vignette';
@@ -32,7 +53,24 @@ export function createHud(root, camera) {
 
   const modeEl = el.querySelector('[data-mode]');
   const pitchEl = el.querySelector('[data-pitch]');
+  const areaEl = el.querySelector('[data-area]');
+
   const hud = {
+    setCamera({ mode, pitchDeg }) {
+      modeEl.textContent = `(${MODE_LABEL[mode]})`;
+      pitchEl.textContent = `(${pitchDeg}°)`;
+    },
+    setArea(name) {
+      areaEl.textContent = name;
+      areaName.textContent = name;
+      areaName.classList.remove('area-name--on');
+      void areaName.offsetWidth; // reinicia a animação
+      areaName.classList.add('area-name--on');
+    },
+    toggle() {
+      el.hidden = !el.hidden;
+      help.setAttribute('aria-expanded', String(!el.hidden));
+    },
     toggleFps() {
       fps.hidden = !fps.hidden;
     },
@@ -46,14 +84,11 @@ export function createHud(root, camera) {
         acc = 0;
       }
     },
-    setCamera({ mode, pitchDeg }) {
-      modeEl.textContent = `(${MODE_LABEL[mode]})`;
-      pitchEl.textContent = `(${pitchDeg}°)`;
-    },
-    toggle() {
-      el.hidden = !el.hidden;
-    },
   };
+  help.addEventListener('click', () => hud.toggle());
+  // em telas pequenas a ajuda começa fechada
+  if (window.matchMedia('(max-width: 700px)').matches) el.hidden = true;
+  help.setAttribute('aria-expanded', String(!el.hidden));
   hud.setCamera(camera);
   return hud;
 }

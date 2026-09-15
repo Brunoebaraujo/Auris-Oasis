@@ -27,13 +27,15 @@ Decisões técnicas e marcos ficam em [`plano-de-execucao.md`](plano-de-execucao
 
 ## 4. Estrutura do mundo
 
-| Área | Papel |
-|---|---|
-| **Aldeia (hub)** | Encontro dos jogadores, NPCs de serviço, entrada para os mundos |
-| **Entorno da Aldeia** | Floresta com as primeiras missões (proposta: tutorial da Fada) |
-| **Caverna da montanha** | **Primeira área de exploração**, estilo Diablo |
-| **Outros mundos** | Acessados a partir da Aldeia (proposta: praça de portais), liberados aos poucos |
-| **Arena PvP** | Acessada pelo Grão-Mestre |
+A **Aldeia é o hub**. Todas as áreas são acessadas por **portais** na praça dos portais, ao norte da Aldeia.
+
+| Área | Acesso | Papel |
+|---|---|---|
+| **Aldeia (hub)** | início do jogo | Encontro dos jogadores, NPCs de serviço, praça dos portais |
+| **Floresta** | portal | **Missões iniciais** (da Fada) |
+| **Caverna** | portal | **Primeira área de exploração**, estilo Diablo |
+| **Outros mundos** | portais novos | Liberados aos poucos |
+| **Arena de Aurelius** | portão da Aldeia | PvP |
 
 ## 5. Estética
 
@@ -57,7 +59,7 @@ Decisões técnicas e marcos ficam em [`plano-de-execucao.md`](plano-de-execucao
 | **Mercador de armas** | Loja de armas e armaduras | Pode ser um **robô** (encaixa na mistura medieval + futurista) |
 | **Alfaiate** | Aparência e trajes | Caminho natural para cosméticos |
 | **A Fada** | **Doadora de missões** | Guia do jogador novo |
-| **Grão-Mestre** | Leva à **arena PvP** | Nome provisório; ver seção 8 |
+| **Aurelius** (o Grão-Mestre) | Leva à **arena PvP** | Visual próprio, sem referência a personagens existentes |
 
 ## 8. Diretrizes e riscos
 
@@ -68,7 +70,7 @@ Decisões técnicas e marcos ficam em [`plano-de-execucao.md`](plano-de-execucao
   - **Personagens originais** que evocam gêneros (ninja, astronauta, piloto de robô gigante, detetive noir) sem copiar nomes, visuais ou símbolos de obras existentes.
   - **Domínio público**, com cuidado: vale a obra original, não versões e marcas posteriores.
   - **Licenciamento** com os detentores, quando houver orçamento.
-- "Grão-Mestre" dono de uma arena de gladiadores lembra muito um personagem da Marvel. Manter o conceito com visual e nome próprios.
+- O mestre da arena ganhou nome próprio (**Aurelius**); o visual também deve ser original.
 - O desenvolvimento assistido por IA **não cria** versões de personagens protegidos. Os personagens do jogo serão originais.
 
 ### Público menor de idade (Brasil)
@@ -91,8 +93,8 @@ Decisões técnicas e marcos ficam em [`plano-de-execucao.md`](plano-de-execucao
 
 ## 10. Pendências
 
-- [ ] Confirmar se a floresta continua em volta da Aldeia (missões da Fada) além da praça de portais.
-- [ ] Nome da Aldeia e do vale.
-- [ ] Nome definitivo do Grão-Mestre.
+- [x] Aldeia como hub; Floresta e Caverna acessadas por portais.
+- [x] Nome do Grão-Mestre: Aurelius.
+- [ ] Nome da Aldeia.
 - [ ] Escolher o caminho para a cultura pop (originais, domínio público, licenças).
 - [ ] Bestiário da Caverna: diabretes, orcs, goblins e demônios; definir o chefe.

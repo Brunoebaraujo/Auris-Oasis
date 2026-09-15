@@ -51,6 +51,7 @@ export class Game {
       const t = this.timer.getElapsed();
       for (const s of this.systems) s.update?.(dt, t);
       this.rig.update(dt);
+      this.afterUpdate?.(dt);
       this.renderer.render(this.scene, this.rig.camera);
     });
   }

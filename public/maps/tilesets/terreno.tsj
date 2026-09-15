@@ -1,0 +1,97 @@
+{
+ "type": "tileset",
+ "version": "1.10",
+ "tiledversion": "1.11.0",
+ "name": "terreno",
+ "tilewidth": 32,
+ "tileheight": 32,
+ "tilecount": 8,
+ "columns": 8,
+ "margin": 0,
+ "spacing": 0,
+ "image": "terreno.png",
+ "imagewidth": 256,
+ "imageheight": 32,
+ "tiles": [
+  {
+   "id": 0,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "grama"
+    }
+   ]
+  },
+  {
+   "id": 1,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "terra"
+    }
+   ]
+  },
+  {
+   "id": 2,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "pedra"
+    }
+   ]
+  },
+  {
+   "id": 3,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "futurista"
+    }
+   ]
+  },
+  {
+   "id": 4,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "agua"
+    }
+   ]
+  },
+  {
+   "id": 5,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "mata"
+    }
+   ]
+  },
+  {
+   "id": 6,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "bloqueio"
+    }
+   ]
+  },
+  {
+   "id": 7,
+   "properties": [
+    {
+     "name": "tipo",
+     "type": "string",
+     "value": "bosque"
+    }
+   ]
+  }
+ ]
+}

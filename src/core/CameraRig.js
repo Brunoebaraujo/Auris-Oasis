@@ -25,15 +25,54 @@ export class CameraRig {
           this.adjustPitch(Math.sign(delta) * this.config.pitch.step);
           return;
         }
-        const { min, max, step } = this.config.zoom;
-        this.zoom = THREE.MathUtils.clamp(this.zoom + Math.sign(delta) * step, min, max);
-        this.applyProjection();
+        this.zoomBy(Math.sign(delta));
       },
       { passive: false },
     );
 
+    // Pinça com dois dedos para zoom (celular)
+    const touches = new Map();
+    let pinchStart = 0;
+    let zoomStart = 1;
+    canvas.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'touch') return;
+      touches.set(e.pointerId, [e.clientX, e.clientY]);
+      if (touches.size === 2) {
+        const [a, b] = [...touches.values()];
+        pinchStart = Math.hypot(a[0] - b[0], a[1] - b[1]);
+        zoomStart = this.zoom;
+      }
+    });
+    canvas.addEventListener('pointermove', (e) => {
+      if (!touches.has(e.pointerId)) return;
+      touches.set(e.pointerId, [e.clientX, e.clientY]);
+      if (touches.size !== 2 || !pinchStart) return;
+      const [a, b] = [...touches.values()];
+      const ratio = pinchStart / Math.max(Math.hypot(a[0] - b[0], a[1] - b[1]), 1);
+      const { min, max } = this.config.zoom;
+      this.zoom = THREE.MathUtils.clamp(zoomStart * ratio, min, max);
+      this.applyProjection();
+    });
+    const lift = (e) => {
+      touches.delete(e.pointerId);
+      if (touches.size < 2) pinchStart = 0;
+    };
+    canvas.addEventListener('pointerup', lift);
+    canvas.addEventListener('pointercancel', lift);
+
     this.resize(canvas.clientWidth, canvas.clientHeight);
     this.place();
+  }
+
+  snapTo(position) {
+    this.focus.copy(position);
+    this.place();
+  }
+
+  zoomBy(steps) {
+    const { min, max, step } = this.config.zoom;
+    this.zoom = THREE.MathUtils.clamp(this.zoom + steps * step, min, max);
+    this.applyProjection();
   }
 
   follow(object3d) {
@@ -63,8 +102,15 @@ export class CameraRig {
     this.applyProjection();
   }
 
+  // Altura visível do mundo. Em tela em pé (celular) abre um pouco mais,
+  // senão a largura visível fica estreita demais.
+  viewHeight() {
+    const portrait = this.aspect < 1 ? Math.sqrt(1 / this.aspect) : 1;
+    return this.config.orthoHeight * this.zoom * portrait;
+  }
+
   applyProjection() {
-    const h = (this.config.orthoHeight * this.zoom) / 2;
+    const h = this.viewHeight() / 2;
     Object.assign(this.ortho, { left: -h * this.aspect, right: h * this.aspect, top: h, bottom: -h });
     this.ortho.updateProjectionMatrix();
 
@@ -79,7 +125,7 @@ export class CameraRig {
     const fov = THREE.MathUtils.degToRad(this.config.fovDeg);
     const dist =
       this.config.mode === 'perspective'
-        ? (this.config.orthoHeight * this.zoom) / 2 / Math.tan(fov / 2)
+        ? this.viewHeight() / 2 / Math.tan(fov / 2)
         : this.config.distance;
     return new THREE.Vector3(
       Math.sin(yaw) * Math.cos(pitch) * dist,

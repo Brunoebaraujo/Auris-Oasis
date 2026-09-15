@@ -1,6 +1,6 @@
 # Plano de execução — Auris Oasis
 
-Status: decisões aprovadas em 15/09/2026. M0 e M1 concluídos. Próximo: M2.
+Status: M0 e M1 concluídos; M2 construído (Aldeia-hub, portais, Floresta), aguardando teste. Próximo: M3.
 Visão de produto (hub, público, NPCs, riscos): [`contexto.md`](contexto.md).
 
 ---
@@ -83,48 +83,35 @@ Camadas padrão de cada mapa:
 
 ---
 
-## 3. Mapa 1 — Aldeia (hub) e entorno (nome provisório)
+## 3. Estrutura do mundo: hub e portais
 
-Grade inicial de 120 × 120 células. Layout proposto:
+A Aldeia é o hub. Cada área jogável é um mapa próprio do Tiled, acessado por um portal na praça dos portais (norte da Aldeia). Guia de edição: [`mapas.md`](mapas.md).
 
 ```
-                          N
-+--------------------------------------------------+
-| ^^^^^^^^^^^^^^^^^^^ MONTANHA ^^^^^^^^^^^^^^^^^^^ |
-| ^^^^^^^^^^^^^^^^^^^^^^^[C]^^^^^^^^^^^^^^^^^^^^^^ |
-| TTTTT FLORESTA PROFUNDA TTTT:TTTTTTTTTTTTTTTTTTT |
-| TTTTTTTTTTTTTTTTTTTTTTTTTTTT:TTTTTTTTTTTTTTTTTTT |
-| ~~~~~~~~~~~~~~~~~~~~~~~~~~~[=]~~~~~~~~~~~~~~~~~~ |
-| TTTTT FLORESTA MEDIA TTTTTTT:TTTTT (clareira) TT |
-| TT ORLA TTTTTTTT +---------+---------+ ORLA TTTT |
-| TTTTTTTTTTTTTTTT |                   | TTTTTTTTT |
-| TTTTTTTTTTTTTTTT |   VILA (inicio)   | TTTTTTTTT |
-| TTTTTTTTTTTTTTTT |                   | TTTTTTTTT |
-| TTTTTTTTTTTTTTTT +---------+---------+ TTTTTTTTT |
-| TTTTTTTTTTTTTTTTTTTTTTTTTTT:TTTTTTTTTTTTTTTTTTTT |
-+--------------------------------------------------+
-  [C] entrada da caverna   [=] ponte   : trilha
+                 N
+     [Caverna]  [Floresta]  [Novo mundo]      praça dos portais (piso futurista)
+            \       |        /
+             +-----------+
+             |  ALDEIA   |---- portão ----> Arena de Aurelius (PvP)
+             |  (hub)    |
+             +-----------+
 ```
 
-Zonas:
-
-| Zona | Papel | Conteúdo inicial |
+| Área | Arquivo | Estado |
 |---|---|---|
-| Aldeia (hub) | zona segura, encontro dos jogadores, renascimento | Fada (missões), vendedora de poções, mercador de armas (robô), alfaiate, Grão-Mestre (arena), baú pessoal, fogueira/waypoint; proposta de praça de portais para outros mundos |
-| Orla da floresta | primeiras missões, sem perigo | coleta, exploração, entregas |
-| Floresta média | missões com combate leve (Marco 5) | clareira com inimigos fracos, ruínas |
-| Rio e ponte | barreira natural de progressão | ponte liberada por missão |
-| Floresta profunda | missões mais difíceis | chefe de área opcional |
-| Montanha | borda do mapa, não caminhável | trilha até a entrada da caverna `[C]` |
+| Aldeia (hub) | `public/maps/aldeia.tmj` | 28 × 28 tiles; fogueira central, prédios, lago, praça dos portais, portão da arena |
+| Floresta | `public/maps/floresta.tmj` | 30 × 30 tiles; clareiras (chegada, oeste, leste), riacho com ponte, ruínas ao norte, acampamento abandonado |
+| Caverna | a criar no M6 | portal já existe, fechado ("em breve") |
+| Arena de Aurelius | depois do multiplayer | portão já existe, fechado |
 
----
+Áreas nomeadas da Floresta, prontas para as missões do M4: `clareira_oeste`, `clareira_leste`, `ruinas_norte`, `acampamento`.
 
-## 4. Mapa 2 — Caverna da montanha (primeira área de exploração)
+## 4. Caverna (primeira área de exploração)
 
 ```
-[Saída p/ Mapa 1]
+[Portal para a Aldeia]
        |
-  ANTECÂMARA  (zona segura: fogueira, waypoint)
+  ANTECÂMARA  (zona segura: fogueira, portal de volta)
        |
    ANDAR 1  (feito à mão)
        |
@@ -133,11 +120,11 @@ Zonas:
  CÂMARA DO CHEFE
 ```
 
-- Transição por portal com tela de carregamento, estilo Diablo.
+- Entrada pelo portal "Caverna" da Aldeia, com a cortina de transição que já existe.
 - Inimigos: diabretes, orcs, goblins e demônios.
 - Iluminação escura: luz ambiente mínima, raio de luz em volta do jogador, tochas nas paredes.
 - Andares 1 e 2 desenhados no Tiled com o kit KayKit Dungeon.
-- Evolução (Marco 7): andares procedurais montados a partir de "salas-modelo" desenhadas no Tiled, encaixadas por uma semente aleatória. Cada visita gera um layout diferente.
+- Evolução (Marco 7): andares procedurais montados a partir de "salas-modelo" desenhadas no Tiled.
 
 ---
 
@@ -229,7 +216,7 @@ Cada marco termina com algo jogável publicado no GitHub Pages.
 | **M3 — Aldeia viva** | Os 5 NPCs com diálogo, criação de personagem com as 4 classes, primeiras peças futuristas, artefato coletável, inventário, save local | Fase 1 do roadmap original concluída |
 | **M4 — Missões** | Motor de missões por dados, diário, marcadores sobre NPCs, 2–3 missões de teste na orla | Você cria uma missão nova só com Tiled + JSON |
 | **M5 — Combate básico** | Inimigos na floresta, ataque por clique, vida, morte e renascimento na vila, drops simples, objetivo `derrotar` | Uma missão de caça completa funciona |
-| **M6 — Mapa 2** | Transição, antecâmara, 2 andares feitos à mão, chefe, iluminação de caverna | Entrar, limpar e sair da caverna |
+| **M6 — Caverna** | Portal aberto, antecâmara, 2 andares feitos à mão, chefe, iluminação de caverna | Entrar, limpar e sair da caverna |
 | **M7 — Profundidade** | Andares procedurais, raridade de itens, atributos, equipamento visível | Duas visitas à caverna nunca são iguais |
 
 Depois do M7: Supabase (contas e persistência), economia, multiplayer — e aí as missões coletivas, competitivas e intergrupo passam a funcionar.

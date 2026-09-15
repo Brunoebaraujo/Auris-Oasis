@@ -21,11 +21,15 @@ A persistent online world containing:
 - Races and battlegrounds
 - Player-driven economy
 
-## Initial World
+## World Structure
 
-**Map 1 — The village hub.** The player begins in the village: safe zone, meeting point, respawn point, and home of the service NPCs (potion seller, weapons merchant — possibly a robot —, tailor, the Fairy who gives missions, and the arena master who leads to PvP). A forest surrounds it in rings of increasing difficulty; this is where quests happen. A river with a bridge gates progress. A mountain closes the northern edge, with a trail leading to a cave entrance.
+**The village hub.** The player begins in the village: safe zone, meeting point, respawn point, and home of the service NPCs (potion seller, weapons merchant — possibly a robot —, tailor, the Fairy who gives missions, and Aurelius, the arena master who leads to PvP). A portal plaza in the north connects the hub to every area.
 
-**Map 2 — Mountain cave (first exploration area).** Diablo-style: imps, orcs, goblins and demons. A safe antechamber, then dungeon floors: first hand-made, later procedurally assembled from room templates, ending in a boss chamber.
+**Forest (portal).** The first area, with the starting missions.
+
+**Cave (portal).** The first exploration area, Diablo-style: imps, orcs, goblins and demons. A safe antechamber, then dungeon floors: first hand-made, later procedurally assembled from room templates, ending in a boss chamber.
+
+**More worlds (portals).** Unlocked over time.
 
 ## Quests
 
@@ -40,7 +44,7 @@ The MVP is intentionally small.
 Player can:
 
 1. Create a character (warrior, barbarian, mage or rogue)
-2. Enter the village and explore Map 1
+2. Enter the village hub and travel to the Forest
 3. Move freely with click-to-move
 4. Complete exploration and collection missions in the forest
 5. Find a collectible artifact and store it in inventory

@@ -18,21 +18,35 @@ export class ClickToMove {
     this.timer = 0;
     this.lastTarget = new THREE.Vector3(Infinity, 0, Infinity);
     this.marker = createMarker();
+    this.enabled = true;
+    this.activePointer = null;
+    this.touchCount = 0;
 
     canvas.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0) return;
-      canvas.setPointerCapture(e.pointerId);
+      if (e.pointerType === 'touch') this.touchCount++;
+      // segundo dedo = pinça de zoom: cancela o andar contínuo
+      if (this.touchCount > 1) {
+        this.holding = false;
+        return;
+      }
+      if (e.button !== 0 || !this.enabled) return;
+      this.activePointer = e.pointerId;
       this.holding = true;
       this.setPointer(e);
       this.command(true);
     });
-    canvas.addEventListener('pointermove', (e) => this.setPointer(e));
+    canvas.addEventListener('pointermove', (e) => {
+      if (this.activePointer === null || e.pointerId === this.activePointer) this.setPointer(e);
+    });
     const release = (e) => {
-      if (e.button !== undefined && e.button !== 0 && e.type === 'pointerup') return;
-      this.holding = false;
+      if (e.pointerType === 'touch') this.touchCount = Math.max(0, this.touchCount - 1);
+      if (e.pointerId === this.activePointer) {
+        this.holding = false;
+        this.activePointer = null;
+      }
     };
-    canvas.addEventListener('pointerup', release);
-    canvas.addEventListener('pointercancel', release);
+    window.addEventListener('pointerup', release);
+    window.addEventListener('pointercancel', release);
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
@@ -57,7 +71,7 @@ export class ClickToMove {
 
   update(dt) {
     this.marker.update(dt);
-    if (!this.holding) return;
+    if (!this.holding || !this.enabled) return;
     this.timer -= dt;
     if (this.timer <= 0) {
       this.timer = REPATH_INTERVAL;
