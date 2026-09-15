@@ -58,6 +58,21 @@ A lista completa de modelos fica em `src/world/modelCatalog.js`.
 | `lampiao` | ponto | `luz` (bool) |
 | `ponte` | retângulo | cubra a água de uma margem à outra |
 | `area` | retângulo | **Name** = nome usado pelas missões (ex.: `clareira_leste`) |
+| `inimigo` | ponto | `tipo` (ex.: `skeleton_minion`), `quantidade` (int), `raio` (float, espalhamento em metros). Renascem sozinhos depois de mortos |
+
+## Propriedades do mapa
+
+Em **Map → Map Properties**:
+
+| Propriedade | Tipo | Para que serve |
+|---|---|---|
+| `nome` | string | Nome mostrado ao chegar |
+| `ambiente` | string | `aldeia` ou `floresta` (luz, névoa, vaga-lumes) |
+| `floresta_externa` | bool | Planta árvores decorativas em volta do mapa |
+| `semente` | int | Muda a distribuição das árvores |
+| `segura` | bool | Zona segura: a vida do herói fica cheia |
+
+Tipos de inimigo disponíveis ficam em `src/config/combat.js`.
 
 ## Criar uma área nova
 

@@ -1,6 +1,6 @@
 # Plano de execução — Auris Oasis
 
-Status: M0 e M1 concluídos; M2 construído (Aldeia-hub, portais, Floresta), aguardando teste. Próximo: M3.
+Status: M0, M1 e M2 concluídos. Combate básico (M5) construído antes do M3/M4, a pedido, aguardando teste. Próximo: ajustes do combate, depois M3.
 Visão de produto (hub, público, NPCs, riscos): [`contexto.md`](contexto.md).
 
 ---
@@ -215,7 +215,7 @@ Cada marco termina com algo jogável publicado no GitHub Pages.
 | **M2 — Blockout do Mapa 1** | Leitor do Tiled, vila + floresta + montanha com blocos simples, A*, colisão, oclusão, portal da caverna (placeholder) | Atravessar o mapa inteiro clicando sem travar |
 | **M3 — Aldeia viva** | Os 5 NPCs com diálogo, criação de personagem com as 4 classes, primeiras peças futuristas, artefato coletável, inventário, save local | Fase 1 do roadmap original concluída |
 | **M4 — Missões** | Motor de missões por dados, diário, marcadores sobre NPCs, 2–3 missões de teste na orla | Você cria uma missão nova só com Tiled + JSON |
-| **M5 — Combate básico** | Inimigos na floresta, ataque por clique, vida, morte e renascimento na vila, drops simples, objetivo `derrotar` | Uma missão de caça completa funciona |
+| **M5 — Combate básico** (antecipado) | Guerreiro com espadada (botão esquerdo, dano alto) e golpe de escudo (botão direito, dano baixo, atordoa 2 s); esqueletos na Floresta; vida, regeneração, morte e volta à Aldeia; números em `src/config/combat.js`. Ficam para depois: drops e objetivo `derrotar` (junto com o M4) | Lutar contra os esqueletos é gostoso |
 | **M6 — Caverna** | Portal aberto, antecâmara, 2 andares feitos à mão, chefe, iluminação de caverna | Entrar, limpar e sair da caverna |
 | **M7 — Profundidade** | Andares procedurais, raridade de itens, atributos, equipamento visível | Duas visitas à caverna nunca são iguais |
 

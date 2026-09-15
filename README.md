@@ -50,7 +50,9 @@ Controls in the current build:
 
 | Input | Action |
 |---|---|
-| Left click | walk there (hold to keep following the cursor) |
+| Left click | walk there (hold to keep following the cursor); on an enemy: sword slash (hold to keep attacking) |
+| Right click | shield bash: low damage, stuns for 2 s (5 s cooldown) |
+| `1` / `2` | sword / shield on the nearest enemy |
 | Mouse wheel | zoom |
 | `Shift` + mouse wheel | camera pitch (30° to 60°) |
 | `C` | switch camera (perspective / isometric) |
@@ -58,7 +60,7 @@ Controls in the current build:
 | `F` | frames per second |
 | `H` | hide the help panel |
 
-On phones and tablets: tap to walk, hold to keep following your finger, pinch to zoom, `?` for help. Add `?leve` to the URL to force the lighter graphics profile on desktop (or `?normal` to force full quality on a phone).
+On phones and tablets: tap to walk, hold to keep following your finger, tap an enemy to attack, use the sword and shield buttons, pinch to zoom, `?` for help. Add `?leve` to the URL to force the lighter graphics profile on desktop (or `?normal` to force full quality on a phone).
 
 ## Publishing
 
@@ -86,5 +88,6 @@ src/ui/              HUD and menus (HTML/CSS over the canvas)
 
 - M0 (foundation): done.
 - M1 (a room that feels good): done. A 20×20 village slice with KayKit art, animated knight, click-to-move with A* pathfinding, hero silhouette behind buildings, torch and campfire lighting. Camera: perspective, 42° pitch.
-- M2 (village hub and portals): built. The village is the hub with a portal plaza; the Forest is the first area; Cave and new-world portals and the Arena of Aurelius gate are in place but closed. Tiled maps, occlusion hole, touch controls and a lighter mobile profile. Waiting for the play test.
-- Next: M3 (living village hub: NPCs, character creation, inventory).
+- M2 (village hub and portals): done. The village is the hub with a portal plaza; the Forest is the first area; Cave and new-world portals and the Arena of Aurelius gate are in place but closed. Tiled maps, occlusion hole, touch controls and a lighter mobile profile.
+- M5 (basic combat), built ahead of M3/M4: the Warrior's sword slash and shield bash, skeleton minions in the Forest, health orb, skill bar, damage numbers, death and return to the village. Waiting for the play test.
+- Next: combat tuning, then M3 (living village hub: NPCs, character creation, inventory).

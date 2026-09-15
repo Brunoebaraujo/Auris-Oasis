@@ -7,6 +7,7 @@ export class CameraRig {
     this.config = { ...config };
     this.zoom = 1;
     this.focus = new THREE.Vector3();
+    this.shakeOffset = new THREE.Vector3();
     this.target = null;
 
     const aspect = canvas.clientWidth / Math.max(canvas.clientHeight, 1);
@@ -135,7 +136,7 @@ export class CameraRig {
   }
 
   place() {
-    this.camera.position.copy(this.focus).add(this.offset());
+    this.camera.position.copy(this.focus).add(this.offset()).add(this.shakeOffset);
     this.camera.lookAt(this.focus);
   }
 

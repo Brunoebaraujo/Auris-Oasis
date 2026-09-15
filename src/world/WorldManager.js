@@ -8,8 +8,8 @@ const NOTICE_RADIUS = 2.4;
 
 // Carrega áreas, troca de área pelos portais e avisa sobre portais fechados.
 export class WorldManager {
-  constructor({ game, assets, player, labels, curtain, toast, onAreaChange }) {
-    Object.assign(this, { game, assets, player, labels, curtain, toast, onAreaChange });
+  constructor({ game, assets, player, labels, curtain, toast, onAreaChange, combat }) {
+    Object.assign(this, { game, assets, player, labels, curtain, toast, onAreaChange, combat });
     this.area = null;
     this.busy = false;
     this.armed = new Set();
@@ -37,19 +37,21 @@ export class WorldManager {
     this.player.spawnAt(spawn[0], spawn[1]);
     this.game.rig.snapTo(this.player.object.position);
     this.labels.set(next.labels);
+    this.combat?.setArea(next);
     this.armed.clear();
     this.noticed.clear();
     this.onAreaChange?.(next);
     return next;
   }
 
-  async travel(portal) {
+  async travel(portal, message) {
     if (this.busy) return;
     this.busy = true;
     this.player.stop();
     try {
-      await this.curtain.close(`Atravessando o portal: ${portal.label}`);
+      await this.curtain.close(message ?? `Atravessando o portal: ${portal.label}`);
       await this.load(portal.target, portal.arrival);
+      portal.after?.();
     } catch (err) {
       console.error(err);
       this.toast('Não foi possível abrir este portal.');

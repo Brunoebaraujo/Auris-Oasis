@@ -1,12 +1,15 @@
 import * as THREE from 'three';
 import { playerConfig } from '../config/player.js';
+import { playerCombat, skills } from '../config/combat.js';
 import { models } from '../world/modelCatalog.js';
 import { palette } from '../config/graphics.js';
+import { Animator, makeFlashable } from './animation.js';
 
 const ORDER_SILHOUETTE = 1;
 const ORDER_HERO = 2;
+const REPATH_TARGET = 0.25;
 
-// Herói controlado pelo jogador: animação, caminho a seguir e silhueta atrás de objetos.
+// Herói: movimento, golpes, vida e silhueta atrás de objetos.
 export class Player {
   constructor(assets, nav, config = playerConfig) {
     this.config = config;
@@ -22,27 +25,27 @@ export class Player {
     });
     this.model = scene;
     this.object.add(scene);
-
-    this.mixer = new THREE.AnimationMixer(scene);
-    const clip = (name) => {
-      const c = animations.find((a) => a.name === name);
-      if (!c) throw new Error(`Animação não encontrada: ${name}`);
-      return this.mixer.clipAction(c);
-    };
-    this.actions = { idle: clip(config.animations.idle), run: clip(config.animations.run) };
-    this.actions.run.timeScale = config.runAnimRate;
-    this.current = this.actions.idle;
-    this.current.play();
-
+    this.anim = new Animator(scene, animations, config.fade);
+    this.anim.loop(config.animations.idle);
+    this.flashFx = makeFlashable(scene);
     this.addSilhouette(scene);
 
-    // Lanterna: raio de luz em volta do herói
     this.lantern = new THREE.PointLight(palette.torch, 7, 8, 1.6);
     this.lantern.position.set(0, 2.6, 0.4);
     this.object.add(this.lantern);
+
+    // combate
+    this.maxHp = playerCombat.maxHp;
+    this.hp = this.maxHp;
+    this.dead = false;
+    this.sinceHit = 99;
+    this.action = null; // golpe em andamento
+    this.intent = null; // golpe pendente (andando até o alvo)
+    this.cooldowns = Object.fromEntries(Object.keys(skills).map((k) => [k, 0]));
+    this.repathTimer = 0;
+    this.onImpact = null; // definido pelo sistema de combate
   }
 
-  // Cópia de cada malha visível que só aparece quando algo está na frente do herói
   addSilhouette(root) {
     const mat = new THREE.MeshBasicMaterial({
       color: this.config.silhouetteColor,
@@ -68,7 +71,6 @@ export class Player {
       ghost.scale.copy(o.scale);
       ghost.renderOrder = ORDER_SILHOUETTE;
       ghost.castShadow = false;
-      ghost.receiveShadow = false;
       ghost.frustumCulled = false;
       o.parent.add(ghost);
     }
@@ -86,9 +88,20 @@ export class Player {
   spawnAt(x, z) {
     this.object.position.set(x, 0, z);
     this.path = [];
+    this.action = null;
+    this.intent = null;
+  }
+
+  revive() {
+    this.dead = false;
+    this.hp = this.maxHp;
+    this.sinceHit = 99;
+    this.anim.loop(this.config.animations.idle);
   }
 
   moveTo(x, z) {
+    if (this.dead) return null;
+    this.intent = null;
     const path = this.nav.findPath(this.position.x, this.position.z, x, z);
     this.path = path ?? [];
     return this.path.length ? this.path[this.path.length - 1] : null;
@@ -96,24 +109,133 @@ export class Player {
 
   stop() {
     this.path = [];
+    this.intent = null;
   }
 
   get moving() {
     return this.path.length > 0;
   }
 
-  play(action) {
-    if (this.current === action) return;
-    action.reset().fadeIn(this.config.fade).play();
-    this.current.fadeOut(this.config.fade);
-    this.current = action;
+  get busy() {
+    return Boolean(this.action);
+  }
+
+  // Golpe contra um inimigo: anda até ele se estiver longe
+  attack(skillId, target) {
+    if (this.dead || !target || target.dead) return;
+    if (this.intent?.target !== target || this.intent.skill !== skillId) this.repathTimer = 0;
+    this.intent = { skill: skillId, target };
+  }
+
+  // Golpe na direção de um ponto, sem sair do lugar
+  strikeToward(skillId, x, z) {
+    if (this.dead) return false;
+    this.intent = null;
+    this.path = [];
+    return this.startAction(skillId, null, Math.atan2(x - this.position.x, z - this.position.z));
+  }
+
+  ready(skillId) {
+    return this.cooldowns[skillId] <= 0 && !this.action && !this.dead;
+  }
+
+  startAction(skillId, target, heading) {
+    if (!this.ready(skillId)) return false;
+    const skill = skills[skillId];
+    this.action = { skillId, skill, target, heading, elapsed: 0, impacted: false };
+    this.cooldowns[skillId] = skill.cooldown;
+    this.path = [];
+    this.anim.once(skill.animation, skill.duration);
+    return true;
+  }
+
+  takeDamage(amount) {
+    if (this.dead) return 0;
+    this.hp = Math.max(0, this.hp - amount);
+    this.sinceHit = 0;
+    this.flashFx.flash(0xff3b2f, 0.14);
+    if (this.hp === 0) {
+      this.dead = true;
+      this.action = null;
+      this.intent = null;
+      this.path = [];
+      this.anim.once(this.config.animations.death, 1.1);
+    }
+    return amount;
+  }
+
+  heal(amount) {
+    if (this.dead) return;
+    this.hp = Math.min(this.maxHp, this.hp + amount);
+  }
+
+  get facing() {
+    return this.object.rotation.y;
+  }
+
+  turnTowards(heading, dt, sharpness = this.config.turnSharpness) {
+    const cur = this.object.rotation.y;
+    const delta = Math.atan2(Math.sin(heading - cur), Math.cos(heading - cur));
+    this.object.rotation.y = cur + delta * Math.min(1, dt * sharpness);
   }
 
   update(dt) {
-    const { runSpeed, arriveDistance, turnSharpness } = this.config;
+    for (const k in this.cooldowns) this.cooldowns[k] = Math.max(0, this.cooldowns[k] - dt);
+    this.sinceHit += dt;
+    this.flashFx.update(dt);
+
+    if (this.dead) {
+      this.anim.update(dt);
+      return;
+    }
+
+    // golpe em andamento: fica parado, virado para o alvo
+    if (this.action) {
+      const a = this.action;
+      a.elapsed += dt;
+      const heading = a.target && !a.target.dead ? Math.atan2(a.target.position.x - this.position.x, a.target.position.z - this.position.z) : a.heading;
+      if (heading !== undefined && heading !== null) this.turnTowards(heading, dt, 22);
+      if (!a.impacted && a.elapsed >= a.skill.impactAt) {
+        a.impacted = true;
+        this.onImpact?.(a);
+      }
+      if (a.elapsed >= a.skill.duration) this.action = null;
+      this.anim.update(dt);
+      return;
+    }
+
+    // golpe pendente: aproxima-se do alvo e golpeia
+    if (this.intent) {
+      const { target, skill: skillId } = this.intent;
+      if (target.dead) {
+        this.intent = null;
+      } else {
+        const skill = skills[skillId];
+        const dx = target.position.x - this.position.x;
+        const dz = target.position.z - this.position.z;
+        const dist = Math.hypot(dx, dz);
+        if (dist <= skill.range * 0.85) {
+          this.path = [];
+          if (this.startAction(skillId, target, Math.atan2(dx, dz))) {
+            this.intent = null;
+          } else {
+            this.turnTowards(Math.atan2(dx, dz), dt);
+          }
+        } else {
+          this.repathTimer -= dt;
+          if (this.repathTimer <= 0) {
+            this.repathTimer = REPATH_TARGET;
+            const back = (skill.range * 0.7) / dist;
+            this.path = this.nav.findPath(this.position.x, this.position.z, target.position.x - dx * back, target.position.z - dz * back) ?? [];
+          }
+        }
+      }
+    }
+
+    // andar
+    const { runSpeed, arriveDistance } = this.config;
     let budget = runSpeed * dt;
     let heading = null;
-
     while (budget > 0 && this.path.length) {
       const [tx, tz] = this.path[0];
       const dx = tx - this.position.x;
@@ -130,14 +252,10 @@ export class Player {
       budget -= step;
       if (step >= dist - 1e-4) this.path.shift();
     }
+    if (heading !== null) this.turnTowards(heading, dt);
 
-    if (heading !== null) {
-      const cur = this.object.rotation.y;
-      const delta = Math.atan2(Math.sin(heading - cur), Math.cos(heading - cur));
-      this.object.rotation.y = cur + delta * Math.min(1, dt * turnSharpness);
-    }
-
-    this.play(this.moving ? this.actions.run : this.actions.idle);
-    this.mixer.update(dt);
+    if (this.moving) this.anim.loop(this.config.animations.run, this.config.runAnimRate);
+    else this.anim.loop(this.config.animations.idle);
+    this.anim.update(dt);
   }
 }

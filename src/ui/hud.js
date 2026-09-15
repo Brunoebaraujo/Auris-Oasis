@@ -4,7 +4,9 @@ import { isTouch } from '../config/graphics.js';
 const MODE_LABEL = { orthographic: 'isométrica', perspective: 'perspectiva' };
 
 const DESKTOP_KEYS = `
-  <dt>Clique</dt><dd>andar (segure para seguir o cursor)</dd>
+  <dt>Esquerdo</dt><dd>andar; no inimigo, espadada (segure para continuar)</dd>
+  <dt>Direito</dt><dd>golpe de escudo: atordoa por 2 s</dd>
+  <dt>1 / 2</dt><dd>espadada / escudo no inimigo mais próximo</dd>
   <dt>Roda</dt><dd>zoom</dd>
   <dt>Shift + roda</dt><dd>inclinação <span data-pitch></span></dd>
   <dt>C</dt><dd>câmera <span data-mode></span></dd>
@@ -13,7 +15,8 @@ const DESKTOP_KEYS = `
   <dt>H</dt><dd>esconder este painel</dd>`;
 
 const TOUCH_KEYS = `
-  <dt>Toque</dt><dd>andar (segure para seguir o dedo)</dd>
+  <dt>Toque</dt><dd>andar (segure para seguir o dedo); no inimigo, espadada</dd>
+  <dt>Botões</dt><dd>espada e escudo no inimigo mais próximo</dd>
   <dt>Pinça</dt><dd>zoom</dd>
   <dt>Portais</dt><dd>entre no círculo para viajar</dd>
   <span hidden data-pitch></span><span hidden data-mode></span>`;
@@ -24,7 +27,7 @@ export function createHud(root, camera) {
   el.id = 'painel-ajuda';
   el.innerHTML = `
     <h1 class="hud__title">Auris Oasis</h1>
-    <p class="hud__stage">Marco 2: <span data-area>Aldeia</span></p>
+    <p class="hud__stage">Marco 5: <span data-area>Aldeia</span></p>
     <dl class="hud__keys">${isTouch ? TOUCH_KEYS : DESKTOP_KEYS}</dl>`;
   root.appendChild(el);
 

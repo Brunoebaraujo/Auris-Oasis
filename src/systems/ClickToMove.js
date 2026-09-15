@@ -6,10 +6,12 @@ const REPATH_MIN_SHIFT = 0.35;
 
 // Clique para andar; segurar o botão faz o herói seguir o cursor (estilo Diablo).
 export class ClickToMove {
-  constructor(canvas, rig, player) {
+  constructor(canvas, rig, player, combat) {
     this.canvas = canvas;
     this.rig = rig;
     this.player = player;
+    this.combat = combat;
+    this.holdTarget = null; // inimigo atacado enquanto o botão está pressionado
     this.raycaster = new THREE.Raycaster();
     this.plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
     this.ndc = new THREE.Vector2();
@@ -29,19 +31,33 @@ export class ClickToMove {
         this.holding = false;
         return;
       }
-      if (e.button !== 0 || !this.enabled) return;
+      if (!this.enabled || (e.button !== 0 && e.button !== 2)) return;
+      this.setPointer(e);
+      const enemy = this.pickEnemy();
+      if (e.button === 2) {
+        // botão direito: golpe de escudo no inimigo ou na direção do cursor
+        this.useShield(enemy);
+        return;
+      }
       this.activePointer = e.pointerId;
       this.holding = true;
-      this.setPointer(e);
-      this.command(true);
+      this.holdTarget = enemy;
+      if (enemy) this.player.attack('sword', enemy);
+      else this.command(true);
     });
     canvas.addEventListener('pointermove', (e) => {
       if (this.activePointer === null || e.pointerId === this.activePointer) this.setPointer(e);
+      if (e.pointerType === 'mouse') {
+        const enemy = this.pickEnemy();
+        this.combat.setHovered(enemy);
+        canvas.style.cursor = enemy ? 'crosshair' : 'default';
+      }
     });
     const release = (e) => {
       if (e.pointerType === 'touch') this.touchCount = Math.max(0, this.touchCount - 1);
       if (e.pointerId === this.activePointer) {
         this.holding = false;
+        this.holdTarget = null;
         this.activePointer = null;
       }
     };
@@ -53,6 +69,25 @@ export class ClickToMove {
   setPointer(e) {
     const rect = this.canvas.getBoundingClientRect();
     this.ndc.set(((e.clientX - rect.left) / rect.width) * 2 - 1, -((e.clientY - rect.top) / rect.height) * 2 + 1);
+  }
+
+  pickEnemy() {
+    this.raycaster.setFromCamera(this.ndc, this.rig.camera);
+    return this.combat.pick(this.raycaster.ray);
+  }
+
+  useShield(enemy) {
+    const p = this.player;
+    if (p.cooldowns.shield > 0) {
+      this.combat.useSkill('shield'); // mostra o aviso de recarga
+      return;
+    }
+    if (enemy) {
+      p.attack('shield', enemy);
+      return;
+    }
+    const point = this.pick();
+    if (point) p.strikeToward('shield', point.x, point.z);
   }
 
   pick() {
@@ -73,10 +108,15 @@ export class ClickToMove {
     this.marker.update(dt);
     if (!this.holding || !this.enabled) return;
     this.timer -= dt;
-    if (this.timer <= 0) {
-      this.timer = REPATH_INTERVAL;
-      this.command(false);
+    if (this.timer > 0) return;
+    this.timer = REPATH_INTERVAL;
+    if (this.holdTarget) {
+      // segurando sobre um inimigo: continua golpeando enquanto ele viver
+      if (!this.holdTarget.dead) this.player.attack('sword', this.holdTarget);
+      else this.holdTarget = null;
+      return;
     }
+    if (!this.player.busy) this.command(false);
   }
 }
 

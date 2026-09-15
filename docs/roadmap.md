@@ -20,7 +20,7 @@ Done when: the public URL opens a 3D scene.
 
 Done when: walking around for two minutes is enjoyable on its own.
 
-## M2 - Village hub and portals (built, awaiting test)
+## M2 - Village hub and portals (done)
 
 - Tiled map loader (`public/maps/*.tmj`, guide in `mapas.md`)
 - The village as the hub, with a portal plaza
@@ -51,14 +51,16 @@ Done when: the original Phase 1 vertical slice is complete.
 
 Done when: a new mission can be created only with Tiled + JSON.
 
-## M5 - Basic combat
+## M5 - Basic combat (built ahead of M3/M4, awaiting test)
 
-- First enemies (goblins, imps)
-- Click to attack, health, death and respawn in the village
-- Simple drops
-- "Defeat" objectives
+- Warrior skills: left click = sword slash (high damage, cleaves the arc in front), right click = shield bash (low damage, 2 s stun, 5 s cooldown); keys 1 and 2 and on-screen buttons target the nearest enemy
+- Click an enemy to walk to it and attack; hold to keep attacking
+- First enemy: skeleton minion (KayKit Skeletons), in four groups in the Forest; rises from the ground, chases, punches, gets stunned, dies and respawns after 25 s
+- Health orb, skill bar with cooldowns, enemy health bars, floating damage numbers, hovered enemy name, hit flash and camera shake
+- Health regenerates out of combat; the village is a safe zone; on death the hero returns to the village
+- Numbers in `src/config/combat.js`
 
-Done when: a full hunting mission works.
+Done when: fighting the skeletons in the Forest feels good.
 
 ## M6 - The Cave
 

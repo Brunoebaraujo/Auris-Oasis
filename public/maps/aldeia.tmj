@@ -32,6 +32,11 @@
    "name": "semente",
    "type": "int",
    "value": 11
+  },
+  {
+   "name": "segura",
+   "type": "bool",
+   "value": true
   }
  ],
  "tilesets": [

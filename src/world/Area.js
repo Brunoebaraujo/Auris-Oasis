@@ -86,6 +86,7 @@ export function buildArea(assets, map, id) {
   const portals = [];
   const labels = [];
   const zones = [];
+  const enemySpawns = [];
   const add = (thing) => {
     group.add(thing.object);
     if (thing.update) updaters.push(thing);
@@ -135,6 +136,9 @@ export function buildArea(assets, map, id) {
         else nav.unblockBox(x - m, z + 0.3, x1 + m, z1 - 0.3);
         break;
       }
+      case 'inimigo':
+        enemySpawns.push({ x, z, type: e.props.tipo ?? 'skeleton_minion', count: e.props.quantidade ?? 1, radius: e.props.raio ?? 2 });
+        break;
       case 'area': {
         const [x1, z1] = toWorld(e.x + e.w, e.y + e.h);
         zones.push({ name: e.name, minX: x, minZ: z, maxX: x1, maxZ: z1, props: e.props });
@@ -171,6 +175,8 @@ export function buildArea(assets, map, id) {
     portals,
     labels,
     zones,
+    enemySpawns,
+    safe: Boolean(map.props.segura),
     update(dt, t) {
       for (const u of updaters) u.update(dt, t);
     },

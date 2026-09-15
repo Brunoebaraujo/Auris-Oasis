@@ -7,6 +7,6 @@ export const playerConfig = {
   turnSharpness: 14,
   arriveDistance: 0.08,
   fade: 0.18,             // transição entre animações (s)
-  animations: { idle: 'Idle', run: 'Running_A' },
+  animations: { idle: 'Idle', run: 'Running_A', hit: 'Hit_A', death: 'Death_A' },
   silhouetteColor: 0xc98a3a, // cor do herói quando está atrás de algo
 };

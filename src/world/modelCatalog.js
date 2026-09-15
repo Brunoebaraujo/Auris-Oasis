@@ -49,6 +49,7 @@ export const models = {
 
   // Personagens
   knight: { path: 'characters/knight', scale: 1 },
+  skeleton_minion: { path: 'characters/skeleton_minion', scale: 0.95 },
 };
 
 export const allModelPaths = () => Object.values(models).map((m) => m.path);
