@@ -2,7 +2,7 @@
 
 Every milestone ends with something playable published on GitHub Pages. Details in [`plano-de-execucao.md`](plano-de-execucao.md).
 
-## M0 - Foundation (in progress)
+## M0 - Foundation (done)
 
 - Vite + Three.js project and folder structure
 - Automatic deploy to GitHub Pages
@@ -10,21 +10,22 @@ Every milestone ends with something playable published on GitHub Pages. Details 
 
 Done when: the public URL opens a 3D scene.
 
-## M1 - A room that feels good
+## M1 - A room that feels good (built, awaiting feel test)
 
 - Isometric camera tuning (orthographic vs. low-FOV perspective)
 - Animated character (KayKit)
 - Click to move, hold to keep moving
 - 20×20 slice of the village with real art, light and shadow
+- Pulled forward from M2: grid navigation with A* (needed to walk around buildings) and a hero silhouette when hidden behind objects
 
 Done when: walking around for two minutes is enjoyable on its own.
 
 ## M2 - Map 1 blockout
 
-- Tiled map loader
+- Tiled map loader (replaces `src/world/maps/vilaRecorte.js`)
 - Village, forest and mountain blocked out
-- Grid navigation with A* pathfinding and collision
-- Occlusion fading for trees, walls and roofs
+- Navigation grid generated from the Tiled blocking layer
+- Occlusion fading for trees, walls and roofs (the M1 silhouette stays)
 - Cave entrance portal (placeholder)
 
 Done when: the whole map can be crossed by clicking without getting stuck.

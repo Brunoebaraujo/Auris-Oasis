@@ -29,7 +29,7 @@ If that loop is not fun, economy, NFTs, marketplace, lore and multiplayer are ir
 - **Vite** for development and builds
 - **JavaScript** for gameplay code
 - **Tiled** for map authoring (JSON export read by the game)
-- **KayKit** asset packs (CC0) for characters, dungeon and village art
+- **KayKit** asset packs (CC0) for characters, dungeon and village art — see [`public/assets/CREDITOS.md`](public/assets/CREDITOS.md)
 - **GitHub Pages** via GitHub Actions for publishing
 - **Supabase** later for login, character persistence and inventory
 - GitHub is the source of truth for code, maps, quest data, assets and documentation
@@ -45,7 +45,16 @@ npm run dev
 
 Then open the address Vite prints (usually http://localhost:5173).
 
-Controls in the current build: `C` switches camera mode, `Space` pauses the demo hero, mouse wheel zooms.
+Controls in the current build:
+
+| Input | Action |
+|---|---|
+| Left click | walk there (hold to keep following the cursor) |
+| Mouse wheel | zoom |
+| `C` | switch camera (isometric / perspective) |
+| `G` | show the navigation grid |
+| `F` | frames per second |
+| `H` | hide the help panel |
 
 ## Publishing
 
@@ -63,7 +72,7 @@ maps/                Tiled maps (.tmj)
 public/assets/       models, textures, sounds
 src/config/          camera, graphics and control settings
 src/core/            game loop, input, camera rig
-src/world/           map loading, navigation, occlusion, portals
+src/world/           map data and building, navigation grid, effects
 src/entities/        player, NPCs, enemies, ground items
 src/systems/         movement, quests, inventory, combat, loot, saving
 src/ui/              HUD and menus (HTML/CSS over the canvas)
@@ -71,4 +80,5 @@ src/ui/              HUD and menus (HTML/CSS over the canvas)
 
 ## Project status
 
-Milestone M0 (foundation): Vite + Three.js project, deploy pipeline and a placeholder village scene with the isometric camera.
+- M0 (foundation): done.
+- M1 (a room that feels good): built. A 20×20 village slice with KayKit art, animated knight, click-to-move with A* pathfinding, hero silhouette behind buildings, torch and campfire lighting. Waiting for the "does walking feel good?" test before M2.

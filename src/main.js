@@ -1,7 +1,12 @@
 import { Game } from './core/Game.js';
-import { buildTestScene } from './world/testScene.js';
-import { createPatrolHero } from './world/patrol.js';
+import { Assets } from './core/Assets.js';
+import { allModelPaths } from './world/modelCatalog.js';
+import { buildVillage } from './world/buildVillage.js';
+import { vilaRecorte } from './world/maps/vilaRecorte.js';
+import { Player } from './entities/Player.js';
+import { ClickToMove } from './systems/ClickToMove.js';
 import { createHud, showFatal } from './ui/hud.js';
+import { createLoading } from './ui/loading.js';
 
 const root = document.getElementById('app');
 
@@ -14,25 +19,46 @@ function webglAvailable() {
   }
 }
 
-if (!webglAvailable()) {
-  showFatal(root, 'Este navegador não suporta WebGL. Abra o Auris Oasis no Chrome, Edge ou Firefox atualizados.');
-} else {
-  const game = new Game(root);
-  const world = buildTestScene(game.scene);
-  const hero = createPatrolHero(game.scene);
+async function boot() {
+  const loading = createLoading(root);
+  const assets = new Assets((p) => loading.progress(p));
+  try {
+    await assets.loadAll(allModelPaths());
+  } catch (err) {
+    console.error(err);
+    loading.fail('Não foi possível carregar os modelos. Recarregue a página.');
+    return;
+  }
 
-  game.add(world.flicker);
-  game.add(hero);
-  game.add({ update: () => world.followShadow(game.rig.focus) });
-  game.rig.follow(hero.object);
+  const game = new Game(root);
+  const village = buildVillage(game.scene, assets, vilaRecorte);
+  const player = new Player(assets, village.nav);
+  player.spawnAt(...village.spawn);
+  game.scene.add(player.object);
+
+  const controls = new ClickToMove(game.renderer.domElement, game.rig, player);
+  game.scene.add(controls.marker.object);
+
+  game.add(village);
+  game.add(player);
+  game.add(controls);
+  game.add({ update: () => village.followShadow(game.rig.focus) });
+  game.rig.follow(player.object);
 
   const hud = createHud(root, { mode: game.rig.config.mode });
   game.input.onKey('KeyC', () => hud.setMode(game.rig.toggleMode()));
-  game.input.onKey('Space', (e) => {
-    e.preventDefault();
-    hud.setPaused(hero.togglePause());
-  });
+  game.input.onKey('KeyG', () => (village.navDebug.visible = !village.navDebug.visible));
+  game.input.onKey('KeyH', () => hud.toggle());
+  game.input.onKey('KeyF', () => hud.toggleFps());
+  game.add(hud);
 
   game.start();
-  window.__auris = game; // atalho de depuração no console
+  loading.done();
+  window.__auris = { game, player, village }; // atalho de depuração no console
+}
+
+if (!webglAvailable()) {
+  showFatal(root, 'Este navegador não suporta WebGL. Abra o Auris Oasis no Chrome, Edge ou Firefox atualizados.');
+} else {
+  boot();
 }

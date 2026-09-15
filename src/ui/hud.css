@@ -2,7 +2,8 @@
   --parchment: #e8dcc0;
   --parchment-dim: #b9ad92;
   --torch: #e0a04a;
-  --dusk: rgba(20, 28, 32, 0.72);
+  --dusk: #2b3a3f;
+  --plate: rgba(20, 28, 32, 0.74);
   --serif: 'IM Fell English', Georgia, serif;
   --serif-sc: 'IM Fell English SC', Georgia, serif;
 }
@@ -13,24 +14,35 @@ html, body {
   margin: 0;
   height: 100%;
   overflow: hidden;
-  background: #2b3a3f;
+  background: var(--dusk);
   color: var(--parchment);
   font-family: var(--serif);
 }
 
 #app { position: fixed; inset: 0; }
-#app canvas { display: block; }
+#app canvas { display: block; touch-action: none; cursor: default; }
+
+/* Escurece as bordas da tela, como a luz de tocha dos ARPGs clássicos */
+.vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 75% 70% at 50% 48%, transparent 55%, rgba(8, 12, 14, 0.62) 100%);
+}
 
 .hud {
   position: absolute;
+  z-index: 2;
   left: 20px;
   bottom: 20px;
   padding: 14px 18px 12px;
-  background: var(--dusk);
+  background: var(--plate);
   border-radius: 3px;
   pointer-events: none;
-  max-width: 300px;
+  max-width: 330px;
 }
+
+.hud[hidden] { display: none; }
 
 .hud__title {
   margin: 0;
@@ -58,15 +70,70 @@ html, body {
   line-height: 1.35;
 }
 
-.hud__keys dt {
-  font-family: var(--serif-sc);
+.hud__keys dt { font-family: var(--serif-sc); color: var(--parchment); }
+.hud__keys dd { margin: 0; color: var(--parchment-dim); }
+
+/* Contador de quadros */
+.fps {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  right: 14px;
+  padding: 4px 8px;
+  background: var(--plate);
+  border-radius: 3px;
+  font-size: 0.95rem;
   color: var(--parchment);
+  pointer-events: none;
 }
 
-.hud__keys dd {
+.fps[hidden] { display: none; }
+
+/* Carregamento */
+.loading {
+  position: absolute;
+  z-index: 5;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  background: var(--dusk);
+  transition: opacity 0.6s ease;
+}
+
+.loading--done { opacity: 0; pointer-events: none; }
+
+.loading__title {
   margin: 0;
+  font-family: var(--serif-sc);
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1;
+  color: var(--torch);
+}
+
+.loading__bar {
+  width: min(320px, 70vw);
+  height: 3px;
+  background: rgba(232, 220, 192, 0.15);
+  overflow: hidden;
+}
+
+.loading__bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: var(--torch);
+  transition: width 0.2s ease;
+}
+
+.loading__text {
+  margin: 0;
+  font-style: italic;
   color: var(--parchment-dim);
 }
+
+.loading--error .loading__text { color: var(--parchment); font-style: normal; }
 
 .fatal {
   position: absolute;
@@ -80,4 +147,8 @@ html, body {
 
 @media (max-width: 520px) {
   .hud { left: 10px; right: 10px; bottom: 10px; max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loading, .loading__bar span { transition: none; }
 }

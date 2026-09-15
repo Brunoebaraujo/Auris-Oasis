@@ -1,6 +1,6 @@
 # Plano de execução — Auris Oasis
 
-Status: decisões aprovadas em 15/09/2026. Marco atual: M0 (fundação).
+Status: decisões aprovadas em 15/09/2026. M0 concluído; M1 construído, aguardando o teste de sensação.
 
 ---
 
@@ -59,7 +59,7 @@ Controles padrão ARPG:
 - KayKit Character Pack: Adventurers — personagens low-poly já riggados e animados.
 - KayKit Dungeon Remastered — mais de 200 peças modulares de dungeon (paredes, pisos, escadas, portas, baús), licença CC0, com repositório no GitHub.
 - KayKit Skeletons — primeiros inimigos da caverna.
-- Pacotes de natureza/vila compatíveis para a floresta e as casas.
+- KayKit Medieval Hexagon Pack — casas, árvores, pedras e objetos da vila. É feito em miniatura, então é ampliado cerca de 4,5× no jogo.
 - Estilo é "low-poly estilizado". O tom dark fantasy vem de iluminação, névoa e paleta. Se a ambição visual for realista/sombria, isso exige assets pagos e deve ser decidido cedo.
 
 ### 2.4 Mapas desenhados no Tiled
@@ -221,7 +221,7 @@ Cada marco termina com algo jogável publicado no GitHub Pages.
 | Marco | Entrega | Pronto quando |
 |---|---|---|
 | **M0 — Fundação** | Vite + Three.js, estrutura de pastas, deploy automático | A URL pública abre uma cena 3D |
-| **M1 — A sala gostosa** | Câmera isométrica (testes orto × perspectiva), personagem animado, clicar para andar, pedaço 20×20 da vila, luz e sombra | Andar por 2 minutos é agradável por si só |
+| **M1 — A sala gostosa** | Câmera isométrica (testes orto × perspectiva), personagem animado, clicar para andar, pedaço 20×20 da vila, luz e sombra. Antecipados do M2: A* e silhueta do herói atrás de objetos | Andar por 2 minutos é agradável por si só |
 | **M2 — Blockout do Mapa 1** | Leitor do Tiled, vila + floresta + montanha com blocos simples, A*, colisão, oclusão, portal da caverna (placeholder) | Atravessar o mapa inteiro clicando sem travar |
 | **M3 — Vila viva** | NPCs com diálogo, criação simples de personagem, artefato coletável, inventário, save local | Fase 1 do roadmap original concluída |
 | **M4 — Missões** | Motor de missões por dados, diário, marcadores sobre NPCs, 2–3 missões de teste na orla | Você cria uma missão nova só com Tiled + JSON |

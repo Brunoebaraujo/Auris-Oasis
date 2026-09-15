@@ -2,10 +2,11 @@ export const graphicsConfig = {
   maxPixelRatio: 2,
   shadows: true,
   shadowMapSize: 2048,
-  fog: { color: 0x2b3a3f, near: 45, far: 95 },
+  fog: { color: 0x2b3a3f, near: 42, far: 90 },
+  exposure: 1.05,
 };
 
-// Paleta do protótipo (placeholders até a arte KayKit entrar no M1)
+// Cores de apoio (a arte principal vem dos modelos KayKit)
 export const palette = {
   dusk: 0x2b3a3f,
   moss: 0x56633f,

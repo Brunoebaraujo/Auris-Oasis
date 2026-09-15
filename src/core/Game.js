@@ -15,6 +15,7 @@ export class Game {
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, graphicsConfig.maxPixelRatio));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    this.renderer.toneMappingExposure = graphicsConfig.exposure;
     this.renderer.shadowMap.enabled = graphicsConfig.shadows;
     this.renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(this.renderer.domElement);
